@@ -20,11 +20,11 @@ exports.verifyAdminToken = async (req, res, next) => {
   const tokenDecoded = tokenDecode(req);
   if (tokenDecoded) {
     const admin = await Admin.findById(tokenDecoded.id);
-    if (!admin) return res.status(403).json("Not allowed!");
+    if (!admin) return res.status(403).json({ message: "Not allow" });
     req.admin = admin;
     next();
   } else {
-    res.status(401).json("Unauthorized");
+    res.status(401).json({ message: "Unauthorized" });
   }
 };
 
@@ -33,11 +33,11 @@ exports.verifyToken = async (req, res, next) => {
   if (tokenDecoded) {
     const admin = await Admin.findById(tokenDecoded.id);
     const user = await User.findById(tokenDecoded.id);
-    if (!admin && !user) return res.status(403).json("Not allowed!");
+    if (!admin && !user) return res.status(403).json({ message: "Not allow" });
     req.admin = admin;
     req.user = user;
     next();
   } else {
-    res.status(401).json("Unauthorized");
+    res.status(401).json({ message: "Unauthorized" });
   }
 };

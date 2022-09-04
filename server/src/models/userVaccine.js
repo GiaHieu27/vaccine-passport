@@ -1,21 +1,23 @@
 const mongoose = require("mongoose");
 const { schemaOptions } = require("./modelOptions");
-const Schema = mongoose.Schema;
 
-const userVaccineShema = new mongoose.Schema(
+const Schema = mongoose.Schema;
+const { ObjectId } = Schema;
+
+const userVaccineShema = new Schema(
   {
     user: {
-      type: Schema.Types.ObjectId,
+      type: ObjectId,
       ref: "User",
       required: true,
     },
     vaccine: {
-      type: Schema.Types.ObjectId,
+      type: ObjectId,
       ref: "Vaccine",
       required: true,
     },
     vaccineLot: {
-      type: Schema.Types.ObjectId,
+      type: ObjectId,
       ref: "VaccineLot",
       required: true,
     },

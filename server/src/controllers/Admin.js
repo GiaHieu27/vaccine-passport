@@ -2,7 +2,7 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const { Admin } = require("../models");
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
