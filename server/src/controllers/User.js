@@ -163,3 +163,15 @@ exports.checinPlace = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// get place that user checked in
+exports.placeVisited = async (req, res) => {
+  try {
+    const list = await UserPlace.find({ user: req.params.userId }).populate(
+      "place"
+    );
+    res.status(200).json(list);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

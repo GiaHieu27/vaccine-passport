@@ -13,6 +13,7 @@ const {
   vaccinated,
   getAllPlacedOfUser,
   checinPlace,
+  placeVisited,
 } = require("../controllers/User");
 
 router.post("/createUser", verifyAdminToken, createUser);
@@ -24,10 +25,11 @@ router.put("/:id", verifyAdminToken, updateUser);
 
 router.delete("/:id", verifyAdminToken, deleteUser);
 
-// add vaccinated to user
+// some apis
 router.post("/vaccinated", verifyAdminToken, vaccinated);
 router.post("/checin-place", verifyToken, checinPlace);
 
 router.get("/:userId/place", verifyAdminToken, getAllPlacedOfUser);
+router.get("/:userId/place-visited", verifyToken, placeVisited);
 
 module.exports = router;
