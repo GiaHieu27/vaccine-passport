@@ -22,8 +22,7 @@ exports.createUser = async (req, res) => {
     const token = jwt.sign({ id: newUser._id }, process.env.TOKEN_SECRET_KEY);
     res.status(200).json({ newUser, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -38,15 +37,14 @@ exports.getAllUser = async (req, res) => {
     }
     res.status(200).json(listUser);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
 exports.getOneUser = async (req, res) => {
   const userId = req.params.id;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(userId);
     const userVaccine = await UserVaccine.find({ user: userId })
       .populate("vaccine")
       .populate("vaccineLot")
@@ -61,8 +59,7 @@ exports.getOneUser = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -73,24 +70,29 @@ exports.updateUser = async (req, res) => {
     let user = await User.findOne({ phoneNumber });
     if (user) {
       return res.status(403).json({
-        message: "Phone number already registered for another account",
+        message: "Phone number already registered",
       });
     }
 
     user = await User.findOne({ idNumber });
     if (user) {
       return res.status(403).json({
-        message: "Id number already registered for another account",
+        message: "Id number already registered",
       });
     }
 
-    const updateUser = await User.findByIdAndUpdate(userId, {
-      $set: req.body,
-    });
+    const updateUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: req.body,
+      },
+      {
+        new: true,
+      }
+    );
     res.status(200).json(updateUser);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -103,7 +105,6 @@ exports.deleteUser = async (req, res) => {
 
     res.status(200).json({ message: "deleted" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };

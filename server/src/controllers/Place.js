@@ -7,9 +7,8 @@ exports.createPlace = async (req, res) => {
       creator: req.user._id,
     }).save();
     res.status(200).json(newPlace);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -30,16 +29,15 @@ exports.getAllPlace = async (req, res) => {
     }
 
     res.status(200).json(listPlace);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 exports.getOnePlace = async (req, res) => {
   try {
-    const { id } = req.params;
-    const place = await Place.findById(id).populate("creator");
+    const placeId = req.params.id;
+    const place = await Place.findById(placeId).populate("creator");
     const userVisitedLast24h = await UserPlace.find({
       place: place._id,
       createdAt: {
@@ -49,41 +47,39 @@ exports.getOnePlace = async (req, res) => {
     place._doc.userVisitedLast24h = userVisitedLast24h;
 
     res.status(200).json(place);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 exports.updatePlace = async (req, res) => {
   try {
-    const { id } = req.params;
-    const userId = req?.user?._id;
-    const adminId = req?.admin?._id;
+    const placeId = req.params.id;
+    const userId = req.user._id;
 
     const place = await Place.findOneAndUpdate(
-      { _id: id, creator: userId ? userId : adminId },
+      { _id: placeId, creator: userId },
       {
         $set: req.body,
-      }
+      },
+      { new: true }
     );
 
     res.status(200).json(place);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
 exports.deletePlace = async (req, res) => {
-  const { id } = req.params;
+  const placeId = req.params.id;
+  const userId = req.user._id;
   try {
-    await UserPlace.deleteMany({ place: id });
-    await Place.findOneAndDelete({ _id: id, creator: req.user._id });
+    await UserPlace.deleteMany({ place: placeId });
+    await Place.findOneAndDelete({ _id: placeId, creator: userId });
 
     res.status(200).json({ message: "deleted" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
