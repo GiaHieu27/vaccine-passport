@@ -1,5 +1,12 @@
 const jwt = require("jsonwebtoken");
-const { User, UserVaccine, UserPlace } = require("../models");
+const {
+  User,
+  UserVaccine,
+  UserPlace,
+  VaccineLot,
+  Vaccine,
+  Place,
+} = require("../models");
 
 exports.createUser = async (req, res) => {
   const { phoneNumber, idNumber } = req.body;
@@ -104,6 +111,54 @@ exports.deleteUser = async (req, res) => {
     await User.findByIdAndDelete(userId);
 
     res.status(200).json({ message: "deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// add vaccinated to user
+exports.vaccinated = async (req, res) => {
+  try {
+    const { userId, vaccineId, vaccineLotId } = req.body;
+    const newVaccine = await new UserVaccine({
+      user: userId,
+      vaccine: vaccineId,
+      vaccineLot: vaccineLotId,
+    }).save();
+
+    await VaccineLot.findOneAndUpdate(
+      { _id: vaccineLotId },
+      {
+        $inc: { vaccinated: +1 },
+      }
+    );
+    newVaccine._doc.vaccine = await Vaccine.findById(vaccineId);
+    newVaccine._doc.vaccineLot = await VaccineLot.findById(vaccineLotId);
+
+    res.status(200).json(newVaccine);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// get places of user
+exports.getAllPlacedOfUser = async (req, res) => {
+  try {
+    const placeList = await Place.find({ creator: req.params.userId });
+    res.status(200).json(placeList);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// user check in place
+exports.checinPlace = async (req, res) => {
+  try {
+    const newVisit = await new UserPlace({
+      user: req.user._id,
+      place: req.body.placeId,
+    }).save();
+    res.status(200).json(newVisit);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
