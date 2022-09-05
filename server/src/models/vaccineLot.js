@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const { schemaOptions } = require("./modelOptions");
-const Schema = mongoose.Schema;
 
-const vaccineLotShema = new mongoose.Schema(
+const Schema = mongoose.Schema;
+const { ObjectId } = Schema;
+
+const vaccineLotShema = new Schema(
   {
     name: {
       type: String,
@@ -19,7 +21,7 @@ const vaccineLotShema = new mongoose.Schema(
       default: 0,
     },
     vaccine: {
-      type: Schema.Types.ObjectId,
+      type: ObjectId,
       ref: "Vaccine",
       required: true,
     },
