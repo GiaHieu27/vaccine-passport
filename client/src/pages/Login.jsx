@@ -39,7 +39,6 @@ function Login() {
       setOnSubmit(false);
       navigate('/');
     } catch (error) {
-      console.log(error.response);
       setLoginErr(error.response.data.message);
       setOnSubmit(false);
     }

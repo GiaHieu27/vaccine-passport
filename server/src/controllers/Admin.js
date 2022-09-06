@@ -33,6 +33,10 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.checkToken = (req, res) => {
+  res.status(200).json({ message: "Authorized" });
+};
+
 exports.summary = async (req, res) => {
   try {
     const totalUser = await User.find({}).count();
