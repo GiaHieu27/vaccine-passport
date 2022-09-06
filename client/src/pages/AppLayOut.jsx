@@ -5,6 +5,7 @@ import { Box, colors, Toolbar } from '@mui/material';
 import { isAuthenticated } from '../handlers/authHandler';
 import Loading from '../components/Loading';
 import TopNav from '../components/TopNav';
+import SideBar from '../components/SideBar';
 
 function AppLayOut() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function AppLayOut() {
     <Box>
       <TopNav />
       <Box sx={{ display: 'flex' }}>
+        <SideBar />
         <Box
           component="main"
           sx={{
