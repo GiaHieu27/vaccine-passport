@@ -6,18 +6,18 @@ function LastestVaccineLotTable({ list }) {
     {
       field: 'name',
       haederName: 'Lot number',
-      with: 200,
+      width: 200,
     },
     {
       field: 'vaccine',
       haederName: 'Vaccine',
-      with: 200,
+      width: 200,
       renderCell: (params) => params.value.name,
     },
     {
       field: 'quantity',
       haederName: 'Quantity',
-      with: 150,
+      width: 150,
       align: 'right',
       renderCell: (params) => params.value.toLocaleString('de-DE'),
     },

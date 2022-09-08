@@ -12,8 +12,8 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-import avtImg from '../assets/images/avt.jpg';
-import { logOut } from '../handlers/authHandler';
+import avtImg from '../../assets/images/avt.jpg';
+import { logOut } from '../../handlers/authHandler';
 
 function TopNav() {
   const theme = useTheme();

@@ -3,9 +3,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, colors, Toolbar } from '@mui/material';
 
 import { isAuthenticated } from '../handlers/authHandler';
-import Loading from '../components/Loading';
-import TopNav from '../components/TopNav';
-import SideBar from '../components/SideBar';
+import Loading from '../components/AppLayOut/Loading';
+import TopNav from '../components/AppLayOut/TopNav';
+import SideBar from '../components/AppLayOut/SideBar';
 
 function AppLayOut() {
   const navigate = useNavigate();

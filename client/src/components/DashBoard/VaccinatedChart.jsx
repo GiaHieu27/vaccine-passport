@@ -3,7 +3,6 @@ import { Chart as ChartJS, ArcElement, Legend, Tooltip } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 function VaccinatedChart({ chartData }) {
-  console.log(chartData);
   ChartJS.register(ArcElement, Tooltip, Legend);
   const data = {
     labels: [

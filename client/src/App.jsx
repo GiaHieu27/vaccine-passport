@@ -7,6 +7,7 @@ import '@fontsource/roboto/700.css';
 import AppLayOut from './pages/AppLayOut';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import User from './pages/User';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="" element={<AppLayOut />}>
           <Route index element={<Dashboard />} />
+          <Route path="user" element={<User />} />
         </Route>
       </Routes>
     </BrowserRouter>
