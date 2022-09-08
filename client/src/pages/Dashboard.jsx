@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
 import AddModeratorOutlinedIcon from '@mui/icons-material/AddModeratorOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import { Link } from 'react-router-dom';
 
 import adminApi from '../api/adminApi';
+import SummaryInfo from '../components/DashBoard/SummaryInfo';
+import VaccinatedChart from '../components/DashBoard/VaccinatedChart';
+import LastestVaccineLotTable from '../components/DashBoard/LastestVaccineLotTable';
 
 function Dashboard() {
   const [summaryData, setSummaryData] = useState();
@@ -14,7 +26,6 @@ function Dashboard() {
     const getData = async () => {
       try {
         const res = await adminApi.getSummary();
-        console.log(res);
         setSummaryData(res);
       } catch (error) {
         console.log(error);
@@ -32,9 +43,9 @@ function Dashboard() {
               {summaryData && (
                 <SummaryInfo
                   title="Total User"
-                  number={summaryData.totalUser.toLocalString('de-DE')}
+                  number={summaryData.totalUser.toLocaleString('de-DE')}
                   icon={
-                    <VerifiedUserOutlinedIcon
+                    <PersonOutlineOutlinedIcon
                       sx={{ fontSize: '3rem' }}
                       color="warning"
                     />
@@ -50,7 +61,7 @@ function Dashboard() {
               {summaryData && (
                 <SummaryInfo
                   title="User vaccinated"
-                  number={summaryData.userVaccinated.toLocalString('de-DE')}
+                  number={summaryData.userVaccinated.toLocaleString('de-DE')}
                   icon={
                     <VerifiedUserOutlinedIcon
                       sx={{ fontSize: '3rem' }}
@@ -67,12 +78,14 @@ function Dashboard() {
             <CardContent>
               {summaryData && (
                 <SummaryInfo
-                  title="User vaccinated"
-                  number={summaryData.userVaccinated.toLocalString('de-DE')}
+                  title="Available vaccine dose"
+                  number={summaryData.availableVaccineDose.toLocaleString(
+                    'de-DE'
+                  )}
                   icon={
-                    <VerifiedUserOutlinedIcon
+                    <AddModeratorOutlinedIcon
                       sx={{ fontSize: '3rem' }}
-                      color="success"
+                      color="primary"
                     />
                   }
                 />
@@ -86,14 +99,50 @@ function Dashboard() {
               {summaryData && (
                 <SummaryInfo
                   title="User vaccinated"
-                  number={summaryData.userVaccinated.toLocalString('de-DE')}
+                  number={summaryData.totalPlace.toLocaleString('de-DE')}
                   icon={
-                    <VerifiedUserOutlinedIcon
-                      sx={{ fontSize: '3rem' }}
-                      color="success"
-                    />
+                    <RoomOutlinedIcon sx={{ fontSize: '3rem' }} color="error" />
                   }
                 />
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <Card elevation={0}>
+            <CardHeader
+              title={<Typography variant="h6">Vaccinated analysts</Typography>}
+            />
+            <CardContent>
+              {summaryData && (
+                <VaccinatedChart
+                  chartData={summaryData.userVaccinatedAnalyst}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={8}>
+          <Card elevation={0}>
+            <CardHeader
+              title={<Typography variant="h6">Lastest Vaccine Lots</Typography>}
+              action={
+                <Button
+                  variant="text"
+                  disableElevation
+                  component={Link}
+                  to="/vaccine"
+                >
+                  Manage vaccine
+                </Button>
+              }
+            />
+            <CardContent>
+              {summaryData && (
+                <LastestVaccineLotTable list={summaryData.lastestVaccineLot} />
               )}
             </CardContent>
           </Card>
@@ -104,25 +153,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-const SummaryInfo = ({ title, number, icon }) => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Stack spacing={2}>
-        <Typography variant="body2" fontWeight={'600'}>
-          {title}
-        </Typography>
-        <Typography variant="h4" fontWeight={'600'}>
-          {number}
-        </Typography>
-      </Stack>
-      <div>{icon}</div>
-    </Box>
-  );
-};
