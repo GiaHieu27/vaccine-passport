@@ -1,3 +1,4 @@
+import React from 'react';
 import CoronavirusOutlinedIcon from '@mui/icons-material/CoronavirusOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import {

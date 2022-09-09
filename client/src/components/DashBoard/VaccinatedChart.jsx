@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { colors } from '@mui/material';
 import { Chart as ChartJS, ArcElement, Legend, Tooltip } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
@@ -47,5 +49,9 @@ function VaccinatedChart({ chartData }) {
     />
   );
 }
+
+VaccinatedChart.propTypes = {
+  chartData: PropTypes.object,
+};
 
 export default VaccinatedChart;

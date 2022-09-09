@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -8,8 +8,8 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
-import userApi from '../api/userApi';
-import PageHeader from '../components/User/PageHeader';
+import userApi from '../../api/userApi';
+import PageHeader from '../../components/User/PageHeader';
 
 function User() {
   const [userList, setUserList] = useState([]);

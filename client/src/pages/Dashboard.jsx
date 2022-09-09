@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
@@ -34,11 +34,13 @@ function Dashboard() {
     getData();
   }, []);
 
+  console.log(summaryData);
+
   return (
     <Stack spacing={4}>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <Card elevation={0}>
+          <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardContent>
               {summaryData && (
                 <SummaryInfo
@@ -56,7 +58,7 @@ function Dashboard() {
           </Card>
         </Grid>
         <Grid item xs={3}>
-          <Card elevation={0}>
+          <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardContent>
               {summaryData && (
                 <SummaryInfo
@@ -74,7 +76,7 @@ function Dashboard() {
           </Card>
         </Grid>
         <Grid item xs={3}>
-          <Card elevation={0}>
+          <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardContent>
               {summaryData && (
                 <SummaryInfo
@@ -94,7 +96,7 @@ function Dashboard() {
           </Card>
         </Grid>
         <Grid item xs={3}>
-          <Card elevation={0}>
+          <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardContent>
               {summaryData && (
                 <SummaryInfo
@@ -112,7 +114,7 @@ function Dashboard() {
 
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <Card elevation={0}>
+          <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardHeader
               title={<Typography variant="h6">Vaccinated analysts</Typography>}
             />
@@ -125,8 +127,9 @@ function Dashboard() {
             </CardContent>
           </Card>
         </Grid>
+
         <Grid item xs={8}>
-          <Card elevation={0}>
+          <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardHeader
               title={<Typography variant="h6">Lastest Vaccine Lots</Typography>}
               action={

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, FormControl, TextField, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -16,6 +16,7 @@ function Login() {
   const [usernameErr, setUsernameErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);
   const [onSubmit, setOnSubmit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmitLogin = async () => {
     if (onSubmit) return;
@@ -34,13 +35,18 @@ function Login() {
     };
     setOnSubmit(true);
     try {
+      setLoading(true);
       const res = await authApi.login(params);
       localStorage.setItem('token', res.token);
       setOnSubmit(false);
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+        setLoading(false);
+      }, 4000);
     } catch (error) {
       setLoginErr(error.response.data.message);
       setOnSubmit(false);
+      setLoading(false);
     }
   };
 
@@ -79,8 +85,8 @@ function Login() {
             alignItems: 'center',
             justifyContent: 'flex-start',
             flexDirection: 'column',
-            margin: 'auto',
-            padding: '5rem 1rem',
+            m: 'auto',
+            p: '5rem 1rem',
           }}
         >
           <Typography
@@ -118,6 +124,7 @@ function Login() {
             variant="contained"
             fullWidth
             size="large"
+            loading={loading}
             sx={{ marginTop: '1rem' }}
             onClick={handleSubmitLogin}
           >

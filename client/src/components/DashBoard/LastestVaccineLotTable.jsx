@@ -1,17 +1,19 @@
-import { DataGrid } from '@mui/x-data-grid';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
+import { DataGrid } from '@mui/x-data-grid';
 
 function LastestVaccineLotTable({ list }) {
   const tableHeaders = [
     {
       field: 'name',
       haederName: 'Lot number',
-      width: 200,
+      width: 150,
     },
     {
       field: 'vaccine',
       haederName: 'Vaccine',
-      width: 200,
+      width: 150,
       renderCell: (params) => params.value.name,
     },
     {
@@ -43,5 +45,9 @@ function LastestVaccineLotTable({ list }) {
     />
   );
 }
+
+LastestVaccineLotTable.propTypes = {
+  list: PropTypes.array.isRequired,
+};
 
 export default LastestVaccineLotTable;

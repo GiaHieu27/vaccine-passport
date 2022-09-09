@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {
   colors,
@@ -64,7 +64,7 @@ function SideBar() {
       sx={{
         width: sideBarWidth,
         height: '100vh',
-        boxShadow: '0px 1px 4px 1px rgb(0 0 0 / 12%)',
+        boxShadow: 3,
         '& .MuiDrawer-paper': {
           boxSizing: 'border-box',
           width: sideBarWidth,

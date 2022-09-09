@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Box, Stack, Typography } from '@mui/material';
 
 const SummaryInfo = ({ title, number, icon }) => {
@@ -20,6 +22,12 @@ const SummaryInfo = ({ title, number, icon }) => {
       <div>{icon}</div>
     </Box>
   );
+};
+
+SummaryInfo.propTypes = {
+  title: PropTypes.string,
+  number: PropTypes.string,
+  icon: PropTypes.object,
 };
 
 export default SummaryInfo;
