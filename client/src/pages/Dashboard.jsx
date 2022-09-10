@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Stack,
-  Typography,
-} from '@mui/material';
+
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import AddModeratorOutlinedIcon from '@mui/icons-material/AddModeratorOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
@@ -20,7 +19,7 @@ import VaccinatedChart from '../components/DashBoard/VaccinatedChart';
 import LastestVaccineLotTable from '../components/DashBoard/LastestVaccineLotTable';
 
 function Dashboard() {
-  const [summaryData, setSummaryData] = useState();
+  const [summaryData, setSummaryData] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -37,7 +36,7 @@ function Dashboard() {
   console.log(summaryData);
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={3.5}>
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <Card elevation={0} sx={{ boxShadow: 2 }}>
@@ -113,7 +112,7 @@ function Dashboard() {
       </Grid>
 
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={4} paddingLeft={0}>
           <Card elevation={0} sx={{ boxShadow: 2 }}>
             <CardHeader
               title={<Typography variant="h6">Vaccinated analysts</Typography>}
