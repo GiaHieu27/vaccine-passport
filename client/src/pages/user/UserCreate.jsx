@@ -7,17 +7,17 @@ import {
   Button,
   Card,
   CardContent,
-  colors,
   FormControl,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import { Stack } from '@mui/system';
 
 import PageHeader from '../../components/User/PageHeader';
 import dvhcvn from '../../assets/dvhcvn.json';
 import userApi from '../../api/userApi';
+import CustomDialog from '../../components/User/CustomDialog';
 
 const initInfo = {
   idCard: '',
@@ -38,8 +38,10 @@ function UserCreate() {
   const [loading, setLoading] = React.useState(false);
   const [info, setInfo] = React.useState(initInfo);
   const [infoErr, setInfoErr] = React.useState(initErr);
-  const [error, setError] = React.useState('');
   const [address, setAddress] = React.useState();
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogType, setDialogType] = React.useState('');
+  const [dialogText, setDialogText] = React.useState('');
 
   const { idCard, name, phone } = info;
   const { idCardErr, nameErr, phoneErr, addressErr } = infoErr;
@@ -75,112 +77,125 @@ function UserCreate() {
     };
 
     try {
-      const { data } = await userApi.createUser(body);
-      console.log(data);
+      const res = await userApi.createUser(body);
       setLoading(false);
-      navigate(`/user/${data.id}`);
+      navigate(`/user/${res.newUser.id}`);
     } catch (error) {
-      setError(error.response.data.message);
       setLoading(false);
+      setDialogOpen(true);
+      setDialogType('error');
+      setDialogText(error.response.data.message);
     }
   };
 
   return (
-    <Box width={'40%'}>
-      <PageHeader
-        title={'Create user'}
-        rightContent={
-          <Stack direction="row" spacing={2}>
-            <Button variant="text" onClick={() => navigate('/user')}>
-              Cancel
+    <>
+      <Box width={'40%'}>
+        <PageHeader
+          title={'Create user'}
+          rightContent={
+            <Stack direction="row" spacing={2}>
+              <Button variant="text" onClick={() => navigate('/user')}>
+                Cancel
+              </Button>
+              <LoadingButton
+                variant="contained"
+                onClick={handleCreateUser}
+                loading={loading}
+              >
+                Create
+              </LoadingButton>
+            </Stack>
+          }
+        />
+
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Card elevation={1}>
+              <CardContent>
+                <FormControl fullWidth margin="normal">
+                  <TextField
+                    name="idCard"
+                    label="Id card"
+                    value={idCard}
+                    error={idCardErr}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth margin="normal">
+                  <TextField
+                    name="name"
+                    label="Full name"
+                    value={name}
+                    error={nameErr}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth margin="normal">
+                  <TextField
+                    name="phone"
+                    label="Phone"
+                    type="number"
+                    value={phone}
+                    error={phoneErr}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth margin="normal">
+                  <Autocomplete
+                    options={dvhcvn.data}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Address"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password',
+                        }}
+                        // value={address}
+                        // onChange={(event, newValue) => setAddress(newValue)}
+                        error={addressErr}
+                      />
+                    )}
+                    getOptionLabel={(option) => option.name}
+                    renderOption={(props, option) => (
+                      <Box {...props}>{option.name}</Box>
+                    )}
+                    autoHighlight={true}
+                    blurOnSelect={true}
+                    value={address}
+                    onChange={(event, newValue) => setAddress(newValue)}
+                  />
+                </FormControl>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <CustomDialog
+        open={dialogOpen}
+        type={dialogType}
+        showIcon
+        content={
+          <Typography variant="subtitle1" textAlign={'center'}>
+            {dialogText}
+          </Typography>
+        }
+        actions={
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+          >
+            <Button variant="contained" onClick={() => setDialogOpen(false)}>
+              OK
             </Button>
-            <LoadingButton
-              variant="contained"
-              onClick={handleCreateUser}
-              loading={loading}
-            >
-              Create
-            </LoadingButton>
-          </Stack>
+          </Box>
         }
       />
-
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Card elevation={1}>
-            {error && (
-              <Typography
-                color={colors.red[700]}
-                textAlign="center"
-                mt={2}
-                variant="h6"
-              >
-                {error}
-              </Typography>
-            )}
-            <CardContent>
-              <FormControl fullWidth margin="normal">
-                <TextField
-                  name="idCard"
-                  label="Id card"
-                  value={idCard}
-                  error={idCardErr}
-                  onChange={(e) => handleChange(e)}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="normal">
-                <TextField
-                  name="name"
-                  label="Full name"
-                  value={name}
-                  error={nameErr}
-                  onChange={(e) => handleChange(e)}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="normal">
-                <TextField
-                  name="phone"
-                  label="Phone"
-                  type="number"
-                  value={phone}
-                  error={phoneErr}
-                  onChange={(e) => handleChange(e)}
-                />
-              </FormControl>
-
-              <FormControl fullWidth margin="normal">
-                <Autocomplete
-                  options={dvhcvn.data}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Address"
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password',
-                      }}
-                      // value={address}
-                      // onChange={(event, newValue) => setAddress(newValue)}
-                      error={addressErr}
-                    />
-                  )}
-                  getOptionLabel={(option) => option.name}
-                  renderOption={(props, option) => (
-                    <Box {...props}>{option.name}</Box>
-                  )}
-                  autoHighlight={true}
-                  blurOnSelect={true}
-                  value={address}
-                  onChange={(event, newValue) => setAddress(newValue)}
-                />
-              </FormControl>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+    </>
   );
 }
 

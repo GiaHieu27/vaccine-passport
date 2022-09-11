@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 const {
   User,
   UserVaccine,
@@ -6,7 +6,7 @@ const {
   VaccineLot,
   Vaccine,
   Place,
-} = require("../models");
+} = require('../models');
 
 exports.createUser = async (req, res) => {
   const { phoneNumber, idNumber } = req.body;
@@ -14,14 +14,14 @@ exports.createUser = async (req, res) => {
     let user = await User.findOne({ phoneNumber });
     if (user) {
       return res.status(403).json({
-        message: "Phone number already registered for another account",
+        message: 'Phone number already registered for another account',
       });
     }
 
     user = await User.findOne({ idNumber });
     if (user) {
       return res.status(403).json({
-        message: "Id number already registered for another account",
+        message: 'Id number already registered for another account',
       });
     }
 
@@ -35,10 +35,10 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
   try {
-    const listUser = await User.find({}).sort("-createdAt");
+    const listUser = await User.find({}).sort('-createdAt');
     for (const user of listUser) {
       const vaccine = await UserVaccine.find({ user: user._id }).sort(
-        "-createdAt"
+        '-createdAt'
       );
       user._doc.vaccine = vaccine;
     }
@@ -53,13 +53,13 @@ exports.getOneUser = async (req, res) => {
   try {
     const user = await User.findById(userId);
     const userVaccine = await UserVaccine.find({ user: userId })
-      .populate("vaccine")
-      .populate("vaccineLot")
-      .sort("-createdAt");
+      .populate('vaccine')
+      .populate('vaccineLot')
+      .sort('-createdAt');
 
     const userPlaceVisit = await UserPlace.find({ user: userId })
-      .populate("place")
-      .sort("-createdAt");
+      .populate('place')
+      .sort('-createdAt');
 
     user._doc.vaccinated = userVaccine;
     user._doc.placeVisited = userPlaceVisit;
@@ -71,22 +71,22 @@ exports.getOneUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  const { phoneNumber, idNumber } = req.body;
+  // const { phoneNumber, idNumber } = req.body;
   const userId = req.params.id;
   try {
-    let user = await User.findOne({ phoneNumber });
-    if (user) {
-      return res.status(403).json({
-        message: "Phone number already registered",
-      });
-    }
+    // let user = await User.findOne({ phoneNumber });
+    // if (user) {
+    //   return res.status(403).json({
+    //     message: 'Phone number already registered',
+    //   });
+    // }
 
-    user = await User.findOne({ idNumber });
-    if (user) {
-      return res.status(403).json({
-        message: "Id number already registered",
-      });
-    }
+    // user = await User.findOne({ idNumber });
+    // if (user) {
+    //   return res.status(403).json({
+    //     message: 'Id number already registered',
+    //   });
+    // }
 
     const updateUser = await User.findByIdAndUpdate(
       userId,
@@ -110,7 +110,7 @@ exports.deleteUser = async (req, res) => {
     await UserPlace.deleteMany({ user: userId });
     await User.findByIdAndDelete(userId);
 
-    res.status(200).json({ message: "deleted" });
+    res.status(200).json({ message: 'deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -168,7 +168,7 @@ exports.checinPlace = async (req, res) => {
 exports.placeVisited = async (req, res) => {
   try {
     const list = await UserPlace.find({ user: req.params.userId }).populate(
-      "place"
+      'place'
     );
     res.status(200).json(list);
   } catch (error) {

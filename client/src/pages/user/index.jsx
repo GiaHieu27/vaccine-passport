@@ -32,9 +32,11 @@ function User() {
       field: 'idNumber',
       headerName: 'ID card',
       renderCell: (params) => {
-        <Button variant="text" component={Link} to={`/user.${params.row.id}`}>
-          {params.value}
-        </Button>;
+        return (
+          <Button variant="text" component={Link} to={`/user/${params.row.id}`}>
+            {params.value}
+          </Button>
+        );
       },
       width: 120,
     },
