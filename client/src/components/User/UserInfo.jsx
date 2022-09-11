@@ -70,8 +70,7 @@ function UserInfo({ user, onUpdateFalse, onUpdateSuccess }) {
       onUpdateSuccess();
     } catch (error) {
       setLoading(false);
-      console.log(error.response.data.message);
-      onUpdateFalse();
+      onUpdateFalse(error.response.data.message);
     }
   };
 
@@ -80,7 +79,7 @@ function UserInfo({ user, onUpdateFalse, onUpdateSuccess }) {
   }, [user]);
 
   return (
-    <Card elevation={1}>
+    <Card elevation={2}>
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={6}>

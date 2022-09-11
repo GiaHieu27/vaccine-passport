@@ -42,7 +42,7 @@ CustomDialog.propTypes = {
   content: PropTypes.node,
   showIcon: PropTypes.bool,
   type: PropTypes.string,
-  actions: PropTypes.func,
+  actions: PropTypes.node,
   open: PropTypes.bool,
 };
 

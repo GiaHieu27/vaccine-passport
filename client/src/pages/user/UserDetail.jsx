@@ -1,7 +1,18 @@
-import { Grid, Stack } from '@mui/material';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
+import QRCode from 'react-qr-code';
+
 import userApi from '../../api/userApi';
+import CustomDialog from '../../components/User/CustomDialog';
 import PageHeader from '../../components/User/PageHeader';
 import UserInfo from '../../components/User/UserInfo';
 
@@ -9,6 +20,9 @@ function UserDetail() {
   const { id } = useParams();
 
   const [user, setUser] = React.useState();
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogType, setDialogType] = React.useState('');
+  const [dialogText, setDialogText] = React.useState('');
 
   React.useEffect(() => {
     const getUser = async () => {
@@ -22,14 +36,72 @@ function UserDetail() {
     getUser();
   }, []);
 
+  const onUpdateSuccess = () => {
+    console.log('success');
+    setDialogType('success');
+    setDialogText('User updated');
+    setDialogOpen(true);
+  };
+
+  const onUpdateFalse = (message) => {
+    console.log('false');
+    setDialogType('error');
+    setDialogText(message || 'User update fail');
+    setDialogOpen(true);
+  };
+
   return (
     <>
       <PageHeader title={'Userdetail'} />
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         <Grid item xs={8}>
-          <Stack spacing={4}>{user && <UserInfo user={user} />}</Stack>
+          <Stack spacing={4}>
+            {user && (
+              <UserInfo
+                user={user}
+                onUpdateSuccess={onUpdateSuccess}
+                onUpdateFalse={onUpdateFalse}
+              />
+            )}
+          </Stack>
+        </Grid>
+
+        <Grid item xs={3}>
+          <Card elevation={1}>
+            <CardContent>
+              <Box
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'center'}
+              >
+                {user && (
+                  <QRCode value={user._id} id="qrcode" size={200} level="H" />
+                )}
+              </Box>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
+
+      <CustomDialog
+        open={dialogOpen}
+        type={dialogType}
+        showIcon
+        content={
+          <Typography variant="subtitle1" textAlign={'center'}>
+            {dialogText}
+          </Typography>
+        }
+        actions={
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+          >
+            <Button variant="contained" onClick={() => setDialogOpen(false)}>
+              OK
+            </Button>
+          </Box>
+        }
+      />
     </>
   );
 }

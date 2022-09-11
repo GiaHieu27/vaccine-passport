@@ -71,7 +71,7 @@ exports.getOneUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  // const { phoneNumber, idNumber } = req.body;
+  const { phoneNumber, idNumber } = req.body;
   const userId = req.params.id;
   try {
     // let user = await User.findOne({ phoneNumber });
