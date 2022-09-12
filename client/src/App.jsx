@@ -12,6 +12,7 @@ import User from './pages/user';
 import UserCreate from './pages/user/UserCreate';
 import UserDetail from './pages/user/UserDetail';
 import Vaccine from './pages/vaccine';
+import VaccineDetail from './pages/vaccine/VaccineDetail';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="user/create" element={<UserCreate />} />
           <Route path="user/:id" element={<UserDetail />} />
           <Route path="vaccine" element={<Vaccine />} />
+          <Route path="vaccine/:id" element={<VaccineDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>

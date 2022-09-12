@@ -71,7 +71,10 @@ function Vaccine() {
       field: 'vaccineLots',
       headerName: 'Lots',
       width: 170,
-      renderCell: (params) => params.value.length,
+      renderCell: (params) => {
+        // console.log(params);
+        return params?.value?.length;
+      },
     },
     {
       field: 'createdAt',
@@ -83,7 +86,7 @@ function Vaccine() {
   ];
 
   const onSuccess = (newVaccine) => {
-    setVaccineList([...vaccineList, newVaccine]);
+    setVaccineList((prev) => [newVaccine, ...prev]);
     setShowCreateMadal(false);
   };
 

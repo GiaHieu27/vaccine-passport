@@ -24,7 +24,6 @@ function VaccineCreateModal({ show, setShowCreateMadal, onSuccess }) {
       const res = await vaccineApi.createVaccine({ name });
       setName('');
       onSuccess(res);
-      console.log(res);
     } catch (error) {
       console.log(error.response.data.message);
       setError(error.response.data.message);
