@@ -2,16 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import Box from '@mui/material/Box';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 function CustomDialog(props) {
   return (
-    <Dialog open={props.open} PaperProps={{ style: { padding: '15px' } }}>
+    <Dialog
+      open={props.open}
+      PaperProps={{ style: { padding: '15px' } }}
+      maxWidth={props.maxWidth ? props.maxWidth : 'xs'}
+      fullWidth={props.fullWidth ? props.fullWidth : true}
+      sx={{
+        '& .MuiDialogContent-root': {
+          paddingBottom: '7px',
+        },
+      }}
+    >
       <DialogTitle>
         {props.title}
         {props.showIcon && (
@@ -39,11 +49,15 @@ function CustomDialog(props) {
 
 CustomDialog.propTypes = {
   title: PropTypes.string,
-  content: PropTypes.node,
-  showIcon: PropTypes.bool,
   type: PropTypes.string,
+  maxWidth: PropTypes.string,
+
+  content: PropTypes.node,
   actions: PropTypes.node,
+
+  showIcon: PropTypes.bool,
   open: PropTypes.bool,
+  fullWidth: PropTypes.bool,
 };
 
 export default CustomDialog;

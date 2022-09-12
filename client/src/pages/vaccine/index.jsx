@@ -82,8 +82,9 @@ function Vaccine() {
     },
   ];
 
-  const onCreateSuccess = (newVaccine) => {
-    console.log(newVaccine);
+  const onSuccess = (newVaccine) => {
+    setVaccineList([...vaccineList, newVaccine]);
+    setShowCreateMadal(false);
   };
 
   return (
@@ -91,11 +92,7 @@ function Vaccine() {
       <PageHeader
         title={'Vaccine List'}
         rightContent={
-          <Button
-            variant="contained"
-            disableElevation
-            onClick={() => setShowCreateMadal(true)}
-          >
+          <Button variant="contained" onClick={() => setShowCreateMadal(true)}>
             Create
           </Button>
         }
@@ -122,8 +119,8 @@ function Vaccine() {
 
       <VaccineCreateModal
         show={showCreateMadal}
-        onClose={() => setShowCreateMadal(false)}
-        onSuccess={onCreateSuccess}
+        setShowCreateMadal={setShowCreateMadal}
+        onSuccess={onSuccess}
       />
     </>
   );

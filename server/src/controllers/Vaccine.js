@@ -1,8 +1,12 @@
-const { Vaccine, VaccineLot, UserVaccine } = require("../models");
+const { Vaccine, VaccineLot, UserVaccine } = require('../models');
 
 exports.createVaccine = async (req, res) => {
   try {
     const { name } = req.body;
+    const check = await Vaccine.findOne({ name });
+    if (check) {
+      return res.status(400).json({ message: 'Vaccine has existed' });
+    }
     const newVaccine = await new Vaccine({ name }).save();
 
     newVaccine._doc.quantity = 0;
@@ -17,7 +21,7 @@ exports.createVaccine = async (req, res) => {
 
 exports.getAllVaccine = async (req, res) => {
   try {
-    const vaccineList = await Vaccine.find({}).sort("-createdAt");
+    const vaccineList = await Vaccine.find({}).sort('-createdAt');
     for (const vaccine of vaccineList) {
       const vaccineLots = await VaccineLot.find({ vaccine: vaccine._id });
       vaccine._doc.quantity = vaccineLots.reduce(
@@ -79,7 +83,7 @@ exports.deleteVaccine = async (req, res) => {
     await UserVaccine.deleteMany({ vaccine: vaccineId });
     await Vaccine.findByIdAndDelete(vaccineId);
 
-    res.status(200).json({ message: "deleted" });
+    res.status(200).json({ message: 'deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

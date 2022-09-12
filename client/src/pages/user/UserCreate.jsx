@@ -178,8 +178,8 @@ function UserCreate() {
 
       <CustomDialog
         open={dialogOpen}
-        type={dialogType}
         showIcon
+        type={dialogType}
         content={
           <Typography variant="subtitle1" textAlign={'center'}>
             {dialogText}
