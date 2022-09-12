@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, colors, Toolbar } from '@mui/material';
 
 import { isAuthenticated } from '../handlers/authHandler';
-import Loading from '../components/AppLayOut/Loading';
+import Loading from '../components/Loading';
 import TopNav from '../components/AppLayOut/TopNav';
 import SideBar from '../components/AppLayOut/SideBar';
 
 function AppLayOut() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const checkToken = async () => {
       const res = await isAuthenticated();
       if (!res) return navigate('/login');

@@ -14,10 +14,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import PageHeader from '../../components/User/PageHeader';
+import PageHeader from '../../components/PageHeader';
 import dvhcvn from '../../assets/dvhcvn.json';
 import userApi from '../../api/userApi';
-import CustomDialog from '../../components/User/CustomDialog';
+import CustomDialog from '../../components/CustomDialog';
 
 const initInfo = {
   idCard: '',

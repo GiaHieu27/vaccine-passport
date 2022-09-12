@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -9,13 +9,13 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 import userApi from '../../api/userApi';
-import PageHeader from '../../components/User/PageHeader';
+import PageHeader from '../../components/PageHeader';
 
 function User() {
-  const [userList, setUserList] = useState([]);
-  const [pageSize, setPageSize] = useState(9);
+  const [userList, setUserList] = React.useState([]);
+  const [pageSize, setPageSize] = React.useState(9);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const getUser = async () => {
       try {
         const res = await userApi.getAllUser();

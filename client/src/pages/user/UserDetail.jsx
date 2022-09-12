@@ -12,8 +12,8 @@ import {
 import QRCode from 'react-qr-code';
 
 import userApi from '../../api/userApi';
-import CustomDialog from '../../components/User/CustomDialog';
-import PageHeader from '../../components/User/PageHeader';
+import CustomDialog from '../../components/CustomDialog';
+import PageHeader from '../../components/PageHeader';
 import UserInfo from '../../components/User/UserInfo';
 
 function UserDetail() {
