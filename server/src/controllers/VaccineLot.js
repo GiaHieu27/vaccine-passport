@@ -1,4 +1,4 @@
-const { VaccineLot, UserVaccine } = require("../models");
+const { VaccineLot, UserVaccine } = require('../models');
 
 exports.createVaccineLot = async (req, res) => {
   const { name, quantity, vaccineId } = req.body;
@@ -18,8 +18,8 @@ exports.createVaccineLot = async (req, res) => {
 exports.getAllVaccineLot = async (req, res) => {
   try {
     const vaccineLotList = await VaccineLot.find({})
-      .populate("vaccine")
-      .sort("-createdAt");
+      .populate('vaccine')
+      .sort('-createdAt');
     res.status(200).json(vaccineLotList);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -29,7 +29,7 @@ exports.getAllVaccineLot = async (req, res) => {
 exports.getOneVaccineLot = async (req, res) => {
   try {
     const vaccineLot = await VaccineLot.findById(req.params.id).populate(
-      "vaccine"
+      'vaccine'
     );
     res.status(200).json(vaccineLot);
   } catch (err) {
@@ -57,7 +57,7 @@ exports.deleteVaccineLot = async (req, res) => {
     const vaccineLotId = req.params.id;
     await UserVaccine.deleteMany({ vaccineLot: vaccineLotId });
     await VaccineLot.findByIdAndDelete(vaccineLotId);
-    res.status(200).json({ message: "deleted" });
+    res.status(200).json({ message: 'deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

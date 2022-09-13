@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
@@ -19,6 +19,7 @@ import CustomDialog from '../../components/CustomDialog';
 
 function VaccineDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [vaccine, setVaccine] = React.useState();
   const [name, setName] = React.useState('');
@@ -27,6 +28,7 @@ function VaccineDetail() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [dialogType, setDialogType] = React.useState('');
   const [dialogText, setDialogText] = React.useState('');
+  const [onDelete, setOnDelete] = React.useState(false);
 
   const handleUpdate = async () => {
     if (loading) return;
@@ -51,6 +53,21 @@ function VaccineDetail() {
     }
   };
 
+  const handleDeleteVaccine = async () => {
+    if (onDelete) return;
+    setOnDelete(true);
+    try {
+      await vaccineApi.deleteVaccine(id);
+      setOnDelete(false);
+      navigate('/vaccine');
+    } catch (err) {
+      setOnDelete(false);
+      setDialogText('Delete fail');
+      setDialogType('error');
+      setDialogOpen(true);
+    }
+  };
+
   React.useEffect(() => {
     const getVaccine = async () => {
       try {
@@ -69,7 +86,12 @@ function VaccineDetail() {
       <PageHeader
         title={'Vaccine detail'}
         rightContent={
-          <LoadingButton variant="text" color="error">
+          <LoadingButton
+            variant="text"
+            color="error"
+            loading={onDelete}
+            onClick={handleDeleteVaccine}
+          >
             Delete
           </LoadingButton>
         }
