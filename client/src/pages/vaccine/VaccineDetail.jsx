@@ -69,6 +69,16 @@ function VaccineDetail() {
     }
   };
 
+  const resetPage = async () => {
+    try {
+      const res = await vaccineApi.getOneVaccine(id);
+      setVaccine(res);
+      setName(res.name);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   React.useEffect(() => {
     const getVaccine = async () => {
       try {
@@ -98,7 +108,7 @@ function VaccineDetail() {
         }
       />
 
-      <Grid container spacing={4}>
+      <Grid container spacing={2}>
         <Grid item xs={4}>
           <Card>
             <CardContent>
@@ -152,7 +162,7 @@ function VaccineDetail() {
         </Grid>
 
         <Grid item xs={8}>
-          {vaccine && <VaccineLots vaccine={vaccine} />}
+          {vaccine && <VaccineLots vaccine={vaccine} resetPage={resetPage} />}
         </Grid>
       </Grid>
 
