@@ -111,7 +111,7 @@ function UserCreate() {
 
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Card elevation={1}>
+            <Card>
               <CardContent>
                 <FormControl fullWidth margin="normal">
                   <TextField
