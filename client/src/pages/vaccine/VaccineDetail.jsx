@@ -16,6 +16,7 @@ import {
 import vaccineApi from '../../api/vaccineApi';
 import PageHeader from '../../components/PageHeader';
 import CustomDialog from '../../components/CustomDialog';
+import VaccineLots from '../../components/Vaccine/VaccineLots';
 
 function VaccineDetail() {
   const { id } = useParams();
@@ -148,6 +149,10 @@ function VaccineDetail() {
               </LoadingButton>
             </CardActions>
           </Card>
+        </Grid>
+
+        <Grid item xs={8}>
+          {vaccine && <VaccineLots vaccine={vaccine} />}
         </Grid>
       </Grid>
 
