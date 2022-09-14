@@ -6,7 +6,11 @@ import { Box, Button, FormControl, TextField, Typography } from '@mui/material';
 import CustomDialog from '../CustomDialog';
 import vaccineApi from '../../api/vaccineApi';
 
-function VaccineCreateModal({ show, setShowCreateMadal, onSuccess }) {
+function VaccineCreateModal({
+  showCreateMadal,
+  setShowCreateMadal,
+  onSuccess,
+}) {
   const [name, setName] = React.useState('');
   const [error, setError] = React.useState(false);
   const [nameErr, setNameErr] = React.useState(false);
@@ -35,7 +39,8 @@ function VaccineCreateModal({ show, setShowCreateMadal, onSuccess }) {
 
   return (
     <CustomDialog
-      open={show}
+      open={showCreateMadal}
+      handleClose={() => setShowCreateMadal(false)}
       title="Add vaccine"
       content={
         <Box padding={'5px 0'}>
@@ -81,7 +86,7 @@ function VaccineCreateModal({ show, setShowCreateMadal, onSuccess }) {
 }
 
 VaccineCreateModal.propTypes = {
-  show: PropTypes.bool,
+  showCreateMadal: PropTypes.bool,
   setShowCreateMadal: PropTypes.func,
   onSuccess: PropTypes.func,
 };

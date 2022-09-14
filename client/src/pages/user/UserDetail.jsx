@@ -15,6 +15,7 @@ import userApi from '../../api/userApi';
 import CustomDialog from '../../components/CustomDialog';
 import PageHeader from '../../components/PageHeader';
 import UserInfo from '../../components/User/UserInfo';
+import UserVaccinated from '../../components/User/UserVaccinated';
 
 function UserDetail() {
   const { id } = useParams();
@@ -63,6 +64,7 @@ function UserDetail() {
                 onUpdateFalse={onUpdateFalse}
               />
             )}
+            {user && <UserVaccinated user={user} />}
           </Stack>
         </Grid>
 
@@ -85,6 +87,7 @@ function UserDetail() {
 
       <CustomDialog
         open={dialogOpen}
+        handleClose={() => setDialogOpen(false)}
         type={dialogType}
         showIcon
         content={

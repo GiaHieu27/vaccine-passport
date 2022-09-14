@@ -149,7 +149,9 @@ function VaccineDetail() {
               )}
             </CardContent>
 
-            <CardActions>
+            <CardActions
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+            >
               <LoadingButton
                 variant="contained"
                 loading={loading}
@@ -168,6 +170,7 @@ function VaccineDetail() {
 
       <CustomDialog
         open={dialogOpen}
+        handleClose={() => setDialogOpen(false)}
         type={dialogType}
         showIcon
         content={

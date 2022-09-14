@@ -121,7 +121,7 @@ function Vaccine() {
       )}
 
       <VaccineCreateModal
-        show={showCreateMadal}
+        showCreateMadal={showCreateMadal}
         setShowCreateMadal={setShowCreateMadal}
         onSuccess={onSuccess}
       />
