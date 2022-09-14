@@ -71,9 +71,9 @@ function VaccineDetail() {
 
   const resetPage = async () => {
     try {
+      console.log('run');
       const res = await vaccineApi.getOneVaccine(id);
       setVaccine(res);
-      setName(res.name);
     } catch (error) {
       console.log(error);
     }
@@ -126,14 +126,14 @@ function VaccineDetail() {
                 <>
                   <TextField
                     label="Available"
-                    defaultValue={vaccine.quantity - vaccine.vaccinated}
+                    value={vaccine.quantity - vaccine.vaccinated}
                     InputProps={{ readOnly: true }}
                     fullWidth
                     margin="normal"
                   />
                   <TextField
                     label="Quantity"
-                    defaultValue={vaccine.quantity}
+                    value={vaccine.quantity}
                     InputProps={{ readOnly: true }}
                     fullWidth
                     margin="normal"

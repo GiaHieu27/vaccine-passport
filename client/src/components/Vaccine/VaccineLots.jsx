@@ -19,7 +19,7 @@ import CustomDialog from '../../components/CustomDialog';
 import vaccineLotApi from '../../api/vaccineLotApi';
 
 function VaccineLots({ vaccine, resetPage }) {
-  const [pageSize, setPageSize] = React.useState(5);
+  const [pageSize, setPageSize] = React.useState(9);
 
   const [lotNumber, setLotNumber] = React.useState('');
   const [quantity, setQuantity] = React.useState('');
@@ -28,6 +28,11 @@ function VaccineLots({ vaccine, resetPage }) {
   const [loading, setLoading] = React.useState(false);
   const [lotNumberErr, setLotNumberErr] = React.useState(false);
   const [quantityErr, setQuantityErr] = React.useState(false);
+  const [onDelete, setOnDelete] = React.useState(false);
+  const [showUpdateDialog, setShowUpdateDialog] = React.useState(false);
+  const [onUpdate, setOnUpdate] = React.useState(false);
+
+  // const [selectedLot, setSelectedLot] = React.useState();
 
   const handleCreateVaccineLot = async () => {
     if (loading) return;
@@ -58,7 +63,20 @@ function VaccineLots({ vaccine, resetPage }) {
     }
   };
 
-  const tableHeader = [
+  const deleteLot = async (lotId) => {
+    if (onDelete) return;
+    setOnDelete(true);
+    try {
+      await vaccineLotApi.deleteVaccineLot(lotId);
+      resetPage();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setOnDelete(false);
+    }
+  };
+
+  const columns = [
     {
       field: 'name',
       headerName: 'Lot number',
@@ -74,7 +92,7 @@ function VaccineLots({ vaccine, resetPage }) {
     {
       field: 'vaccinated',
       headerName: 'Vaccinated',
-      width: 100,
+      width: 150,
       align: 'right',
       renderCell: (params) => params.value.toLocaleString('de-dE'),
     },
@@ -89,24 +107,31 @@ function VaccineLots({ vaccine, resetPage }) {
     {
       field: 'createdAt',
       headerName: 'Time',
-      flex: 1,
+      width: 180,
       renderCell: (params) =>
         moment(params.value).format('DD-MM-YYYY HH:mm:ss'),
     },
     {
       field: '_id',
       headerName: 'Actions',
-      flex: 1,
+      width: 200,
       renderCell: (params) => (
         <>
           <LoadingButton
             color="error"
             disableElevation
             startIcon={<DeleteOutlineOutlinedIcon />}
+            loading={onDelete}
+            onClick={() => deleteLot(params.row.id)}
           >
             Delete
           </LoadingButton>
-          <Button disableElevation startIcon={<ModeEditOutlineOutlinedIcon />}>
+
+          <Button
+            disableElevation
+            startIcon={<ModeEditOutlineOutlinedIcon />}
+            // onClick={() => selectLot(params.row)}
+          >
             Edit
           </Button>
         </>
@@ -130,7 +155,7 @@ function VaccineLots({ vaccine, resetPage }) {
           <DataGrid
             autoHeight
             rows={vaccine.vaccineLots}
-            columns={tableHeader}
+            columns={columns}
             pageSize={pageSize}
             rowsPerPageOptions={[9, 50, 100]}
             onPageSizeChange={(size) => setPageSize(size)}
