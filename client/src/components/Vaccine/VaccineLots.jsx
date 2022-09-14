@@ -24,25 +24,26 @@ function VaccineLots({ vaccine, resetPage }) {
   const [lotNumber, setLotNumber] = React.useState('');
   const [quantity, setQuantity] = React.useState('');
 
-  const [showAddDialog, setShowAddDialog] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const [lotNumberErr, setLotNumberErr] = React.useState(false);
   const [quantityErr, setQuantityErr] = React.useState(false);
-  const [onDelete, setOnDelete] = React.useState(false);
-  const [showUpdateDialog, setShowUpdateDialog] = React.useState(false);
-  const [onUpdate, setOnUpdate] = React.useState(false);
+  const [showAddVaccineLot, setShowAddVaccineLot] = React.useState(false);
+  const [showUpdateVaccineLot, setShowUpdateVaccineLot] = React.useState(false);
 
-  // const [selectedLot, setSelectedLot] = React.useState();
+  const [addLoading, setAddLoading] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
+  const [updateLoading, setUpdateLoading] = React.useState(false);
+
+  const [selectedLot, setSelectedLot] = React.useState();
 
   const handleCreateVaccineLot = async () => {
-    if (loading) return;
+    if (addLoading) return;
     const err = [!lotNumber, !quantity];
 
     setLotNumberErr(!lotNumber);
     setQuantityErr(!quantity);
 
     if (!err.every((e) => !e)) return;
-    setLoading(true);
+    setAddLoading(true);
 
     const body = {
       vaccineId: vaccine.id,
@@ -54,26 +55,58 @@ function VaccineLots({ vaccine, resetPage }) {
       await vaccineLotApi.createVaccineLot(body);
       setQuantity('');
       setLotNumber('');
-      setShowAddDialog(false);
+      setShowAddVaccineLot(false);
       resetPage();
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setAddLoading(false);
     }
   };
 
-  const deleteLot = async (lotId) => {
-    if (onDelete) return;
-    setOnDelete(true);
+  const handleDeleteVaccineLot = async (lotId) => {
+    if (deleteLoading) return;
+    setDeleteLoading(true);
     try {
       await vaccineLotApi.deleteVaccineLot(lotId);
       resetPage();
     } catch (err) {
       console.log(err);
     } finally {
-      setOnDelete(false);
+      setDeleteLoading(false);
     }
+  };
+
+  const handleUpdateVaccineLot = async () => {
+    if (updateLoading) return;
+    const err = [!lotNumber, !quantity];
+    setLotNumberErr(!lotNumber);
+    setQuantityErr(!quantity);
+
+    if (!err.every((e) => !e)) return;
+    setUpdateLoading(true);
+    const body = {
+      name: lotNumber,
+      quantity,
+    };
+    try {
+      await vaccineLotApi.updateVaccineLot(selectedLot.id, body);
+      setQuantity('');
+      setLotNumber('');
+      setShowUpdateVaccineLot(false);
+      resetPage();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
+  const handleSelectLot = (lot) => {
+    setLotNumber(lot.name);
+    setQuantity(lot.quantity);
+    setSelectedLot(lot);
+    setShowUpdateVaccineLot(true);
   };
 
   const columns = [
@@ -121,8 +154,8 @@ function VaccineLots({ vaccine, resetPage }) {
             color="error"
             disableElevation
             startIcon={<DeleteOutlineOutlinedIcon />}
-            loading={onDelete}
-            onClick={() => deleteLot(params.row.id)}
+            loading={deleteLoading}
+            onClick={() => handleDeleteVaccineLot(params.row.id)}
           >
             Delete
           </LoadingButton>
@@ -130,7 +163,7 @@ function VaccineLots({ vaccine, resetPage }) {
           <Button
             disableElevation
             startIcon={<ModeEditOutlineOutlinedIcon />}
-            // onClick={() => selectLot(params.row)}
+            onClick={() => handleSelectLot(params.row)}
           >
             Edit
           </Button>
@@ -145,7 +178,15 @@ function VaccineLots({ vaccine, resetPage }) {
         <CardHeader
           title={<Typography variant="h6">Lots Information</Typography>}
           action={
-            <Button variant="contained" onClick={() => setShowAddDialog(true)}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setLotNumber('');
+                setQuantity('');
+                setSelectedLot(undefined);
+                setShowAddVaccineLot(true);
+              }}
+            >
               Add lot
             </Button>
           }
@@ -168,7 +209,8 @@ function VaccineLots({ vaccine, resetPage }) {
       </Card>
 
       <CustomDialog
-        open={showAddDialog}
+        open={showAddVaccineLot}
+        handleClose={() => setShowAddVaccineLot(false)}
         title="Add vaccine lot"
         content={
           <Box>
@@ -193,19 +235,64 @@ function VaccineLots({ vaccine, resetPage }) {
         actions={
           <Box>
             <Button
-              onClick={() => setShowAddDialog(false)}
-              disabled={loading}
+              onClick={() => setShowAddVaccineLot(false)}
+              disabled={addLoading}
               sx={{ mr: '8px' }}
             >
               Cancel
             </Button>
             <LoadingButton
-              loading={loading}
+              loading={addLoading}
               variant="contained"
               onClick={handleCreateVaccineLot}
               sx={{ mr: '15px' }}
             >
               Create
+            </LoadingButton>
+          </Box>
+        }
+      />
+
+      <CustomDialog
+        open={showUpdateVaccineLot}
+        handleClose={() => setShowUpdateVaccineLot(false)}
+        title="Update vaccine lot"
+        content={
+          <Box>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Lot number"
+              value={lotNumber}
+              error={lotNumberErr}
+              onChange={(e) => setLotNumber(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Quantity"
+              value={quantity}
+              error={quantityErr}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+          </Box>
+        }
+        actions={
+          <Box>
+            <Button
+              onClick={() => setShowUpdateVaccineLot(false)}
+              disabled={updateLoading}
+              sx={{ mr: '8px' }}
+            >
+              Cancel
+            </Button>
+            <LoadingButton
+              variant="contained"
+              sx={{ mr: '15px' }}
+              loading={updateLoading}
+              onClick={handleUpdateVaccineLot}
+            >
+              Update
             </LoadingButton>
           </Box>
         }

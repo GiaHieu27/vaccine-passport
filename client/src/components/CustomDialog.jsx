@@ -13,6 +13,7 @@ function CustomDialog(props) {
   return (
     <Dialog
       open={props.open}
+      onClose={props.handleClose}
       PaperProps={{ style: { padding: '15px' } }}
       maxWidth={props.maxWidth ? props.maxWidth : 'xs'}
       fullWidth={props.fullWidth ? props.fullWidth : true}
@@ -58,6 +59,8 @@ CustomDialog.propTypes = {
   showIcon: PropTypes.bool,
   open: PropTypes.bool,
   fullWidth: PropTypes.bool,
+
+  handleClose: PropTypes.func,
 };
 
 export default CustomDialog;
