@@ -99,7 +99,7 @@ function Dashboard() {
             <CardContent>
               {summaryData && (
                 <SummaryInfo
-                  title="User vaccinated"
+                  title="Total place"
                   number={summaryData.totalPlace.toLocaleString('de-DE')}
                   icon={
                     <RoomOutlinedIcon sx={{ fontSize: '3rem' }} color="error" />

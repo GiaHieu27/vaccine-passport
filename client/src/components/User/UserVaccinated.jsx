@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Autocomplete,
   Box,
@@ -15,16 +16,20 @@ import {
 import moment from 'moment';
 
 import vaccineApi from '../../api/vaccineApi';
+import userApi from '../../api/userApi';
 import CustomDialog from '../CustomDialog';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 function UserVaccinated({ user }) {
   const [userVaccines, setUserVaccines] = React.useState(user.vaccinated);
+
   const [vaccineList, setVaccineList] = React.useState([]);
   const [vaccineLots, setVaccineLots] = React.useState([]);
+
   const [selectedVaccine, setSelectedVaccine] = React.useState();
   const [selectedLot, setSelectedLot] = React.useState();
+
   const [showAddDialog, setShowAddDialog] = React.useState(false);
+  const [addLoading, setAddLoading] = React.useState(false);
 
   const columns = [
     {
@@ -55,6 +60,30 @@ function UserVaccinated({ user }) {
         moment(params.value).format('DD-MM-YYYY HH:mm:ss'),
     },
   ];
+
+  const handleAddVaccinated = async () => {
+    if (addLoading) return;
+    const err = [!selectedVaccine, !selectedLot];
+
+    if (!err.every((e) => !e)) return;
+    setAddLoading(true);
+
+    const body = {
+      userId: user.id,
+      vaccineId: selectedVaccine.id,
+      vaccineLotId: selectedLot.id,
+    };
+
+    try {
+      const res = await userApi.vaccinated(body);
+      setUserVaccines([res, ...userVaccines]);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setAddLoading(false);
+      setShowAddDialog(false);
+    }
+  };
 
   React.useEffect(() => {
     const getVaccines = async () => {
@@ -170,10 +199,16 @@ function UserVaccinated({ user }) {
                 setSelectedVaccine(null);
                 setShowAddDialog(false);
               }}
+              disabled={addLoading}
             >
               Cancel
             </Button>
-            <LoadingButton sx={{ mr: '15px' }} variant="contained">
+            <LoadingButton
+              sx={{ mr: '15px' }}
+              variant="contained"
+              loading={addLoading}
+              onClick={handleAddVaccinated}
+            >
               Add
             </LoadingButton>
           </Box>
