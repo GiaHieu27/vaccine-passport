@@ -13,7 +13,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
-import avtImg from '../../assets/images/avt.jpg';
 import { logOut } from '../../handlers/authHandler';
 
 function TopNav() {
@@ -42,7 +41,7 @@ function TopNav() {
         <Stack direction={'row'} spacing={2} alignItems="center">
           <Avatar
             alt="User image"
-            src={avtImg}
+            src="https://res.cloudinary.com/dxeclkxcd/image/upload/v1663229980/admin-avatar_tj1yvs.webp"
             sx={{ height: '30px', width: '30px' }}
           />
           <IconButton

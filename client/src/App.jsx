@@ -15,6 +15,7 @@ import Vaccine from './pages/vaccine';
 import VaccineDetail from './pages/vaccine/VaccineDetail';
 import Place from './pages/place';
 import PlaceDetail from './pages/place/PlaceDetail';
+import QRScan from './pages/qrscan';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="vaccine/:id" element={<VaccineDetail />} />
           <Route path="place" element={<Place />} />
           <Route path="place/:id" element={<PlaceDetail />} />
+          <Route path="qr-scan" element={<QRScan />} />
         </Route>
       </Routes>
     </BrowserRouter>
