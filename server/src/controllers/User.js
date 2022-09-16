@@ -74,19 +74,21 @@ exports.updateUser = async (req, res) => {
   const { phoneNumber, idNumber } = req.body;
   const userId = req.params.id;
   try {
-    // let user = await User.findOne({ phoneNumber });
-    // if (user) {
-    //   return res.status(403).json({
-    //     message: 'Phone number already registered',
-    //   });
-    // }
+    let user = await User.findOne({ phoneNumber });
+    if (user && user._id.toString() !== userId) {
+      console.log(userId);
+      console.log(user._id);
+      return res.status(403).json({
+        message: 'Phone number already registered',
+      });
+    }
 
-    // user = await User.findOne({ idNumber });
-    // if (user) {
-    //   return res.status(403).json({
-    //     message: 'Id number already registered',
-    //   });
-    // }
+    user = await User.findOne({ idNumber });
+    if (user && user._id.toString() !== userId) {
+      return res.status(403).json({
+        message: 'Id number already registered',
+      });
+    }
 
     const updateUser = await User.findByIdAndUpdate(
       userId,

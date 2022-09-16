@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { Button, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -8,8 +8,12 @@ import vaccineApi from '../../api/vaccineApi';
 import PageHeader from '../../components/PageHeader';
 import Loading from '../../components/Loading';
 import VaccineCreateModal from '../../components/Vaccine/VaccineCreateModal';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 function Vaccine() {
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
+
   const [vaccineList, setVaccineList] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(9);
   const [showCreateMadal, setShowCreateMadal] = React.useState(false);
@@ -92,6 +96,7 @@ function Vaccine() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} />
       <PageHeader
         title={'Vaccine List'}
         rightContent={

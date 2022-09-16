@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
@@ -10,8 +10,12 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 import userApi from '../../api/userApi';
 import PageHeader from '../../components/PageHeader';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 function User() {
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
+
   const [userList, setUserList] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(9);
 
@@ -104,6 +108,7 @@ function User() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} />
       <PageHeader
         title={'User List'}
         rightContent={

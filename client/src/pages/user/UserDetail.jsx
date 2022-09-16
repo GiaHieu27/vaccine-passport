@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -16,9 +16,12 @@ import CustomDialog from '../../components/CustomDialog';
 import PageHeader from '../../components/PageHeader';
 import UserInfo from '../../components/User/UserInfo';
 import UserVaccinated from '../../components/User/UserVaccinated';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 function UserDetail() {
   const { id } = useParams();
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
 
   const [user, setUser] = React.useState();
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -53,6 +56,7 @@ function UserDetail() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} name="user-detail" />
       <PageHeader title={'Userdetail'} />
       <Grid container spacing={3}>
         <Grid item xs={8}>

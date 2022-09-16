@@ -33,7 +33,7 @@ function Dashboard() {
     getData();
   }, []);
 
-  console.log(summaryData);
+  // console.log(summaryData);
 
   return (
     <Stack spacing={3.5}>

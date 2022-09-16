@@ -1,13 +1,17 @@
 import React from 'react';
 
 import { Button, Paper } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 
 import placeApi from '../../api/placeApi';
 import PageHeader from '../../components/PageHeader';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 function Place() {
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
+
   const [placeList, setPlaceList] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(9);
 
@@ -65,6 +69,7 @@ function Place() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} />
       <PageHeader title="Place list" />
       <Paper>
         <DataGrid

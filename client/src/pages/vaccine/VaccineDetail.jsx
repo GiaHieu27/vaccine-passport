@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
@@ -17,10 +17,13 @@ import vaccineApi from '../../api/vaccineApi';
 import PageHeader from '../../components/PageHeader';
 import CustomDialog from '../../components/CustomDialog';
 import VaccineLots from '../../components/Vaccine/VaccineLots';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 function VaccineDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
 
   const [vaccine, setVaccine] = React.useState();
   const [name, setName] = React.useState('');
@@ -94,6 +97,7 @@ function VaccineDetail() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} name="vaccine-detail" />
       <PageHeader
         title={'Vaccine detail'}
         rightContent={

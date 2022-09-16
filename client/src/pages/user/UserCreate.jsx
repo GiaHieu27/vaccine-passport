@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Autocomplete,
@@ -18,6 +18,7 @@ import PageHeader from '../../components/PageHeader';
 import dvhcvn from '../../assets/dvhcvn.json';
 import userApi from '../../api/userApi';
 import CustomDialog from '../../components/CustomDialog';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 const initInfo = {
   idCard: '',
@@ -34,6 +35,8 @@ const initErr = {
 
 function UserCreate() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
 
   const [loading, setLoading] = React.useState(false);
   const [info, setInfo] = React.useState(initInfo);
@@ -90,6 +93,7 @@ function UserCreate() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} />
       <Box width={'40%'}>
         <PageHeader
           title={'Create user'}

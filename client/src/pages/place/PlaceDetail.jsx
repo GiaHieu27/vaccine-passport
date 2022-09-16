@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -17,9 +17,12 @@ import moment from 'moment';
 import placeApi from '../../api/placeApi';
 import PageHeader from '../../components/PageHeader';
 import { DataGrid } from '@mui/x-data-grid';
+import CustomBreadcrumds from '../../components/CustomBreadcrumds';
 
 function VaccineDetail() {
   const { id } = useParams();
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
 
   const [place, setPlace] = React.useState();
   const [pageSize, setPageSize] = React.useState(9);
@@ -66,8 +69,8 @@ function VaccineDetail() {
 
   return (
     <>
+      <CustomBreadcrumds pathnames={pathnames} name="place-detail" />
       <PageHeader title={'Place detail'} />
-
       <Grid container spacing={4}>
         <Grid item xs={4}>
           <Card>
